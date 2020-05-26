@@ -1,0 +1,105 @@
+{% extends "blog.html" %}
+{% load static %}
+
+{% block cont1 %}
+    <div class="w3-row w3-padding w3-border">
+
+    <!-- Blog entries -->
+    <div class="w3-col l8 s12">
+
+      <!-- Blog entry -->
+      <div class="w3-container w3-white w3-margin w3-padding-large">
+        <div class="w3-center">
+          <h3>{{post.title}}</h3>
+          <h5><span class="w3-opacity">{{post.puplish}}</span></h5>
+        </div>
+
+        <div class="w3-justify">
+            {% if post.image %}
+                <img src="{{ post.image.url }}" alt="Girl Hat" style="width:100%" class="w3-padding-16">
+            {% endif %}
+            {% if post.video %}
+                <video style="width:100%" controls>
+                <source src="{{ post.video.url }}" type='video/mp4'>
+                </video>
+            {% endif %}
+          <p><strong>{{ post.content }}</strong></p>
+        {% if post.link %}
+            <h4>Show all video in <span style="background-color: darkred; padding-left: 5px; padding-right: 5px; color: antiquewhite"><a target="_blank" style="text-decoration: none; color: cornsilk" href="{{ item.link }}">youtube</a></span></h4>
+        {% endif %}
+
+        <span class="w3-left"><h4>{{ postlike.count }} <span style="font-size: large">Likes</span></h4></span>
+        {% if user.is_authenticated %}
+        {% if p %}
+            <p class="w3-right"><button class="w3-button w3-white w3-border" onclick="likedFunction(this)"><a href="{% url 'like' post.id %}"><b><i class="fa fa-check-square-o"></i> Liked</b></a></button></p>
+        {% else %}
+            <p class="w3-right"><button class="w3-button w3-white w3-border" onclick="likeFunction(this)"><a href="{% url 'like' post.id %}"><b><i class="fa fa-thumbs-up"></i> Like</b></a></button></p>
+        {% endif %}
+        {% endif %}
+
+        </div>
+      </div>
+      <hr>
+
+    <!-- END BLOG ENTRIES -->
+    </div>
+
+    <div style="float: left; max-width: 435px; margin-top: 20px; text-align: center">
+        <h3 style="padding: 10px">Comments <span style="background-color: black; color: snow; font-size: large; padding: 3px">{{ postcomment.count }}</span></h3>
+        {% if user.is_authenticated %}
+        <form class="w-full" method="post" action="{% url 'comment' post.id %}" style="width: 435px; text-align: center">
+            {% csrf_token %}
+            <div class="row p-b-25">
+                <div class="col-12 p-b-5">
+                    <textarea class="size-110 bor8 stext-102 cl2 p-lr-20 p-tb-10" id="review" name="review" placeholder="add comment" style="width: 100%" required></textarea>
+                </div>
+            </div>
+            <button class="flex-c-m stext-101 cl0 size-112 bg7 bor11 hov-btn3 p-lr-15 trans-04 m-b-10" style="background-color: black; padding: 5px; border-radius: 10px; color: snow; width: 70px">
+                Add
+            </button>
+        </form>
+        {% endif %}
+    </div>
+
+    <div style="float: left; max-height: 600px; width: 435px; margin-top: 20px; overflow: scroll">
+        {% for item in postcomment %}
+        <div class="w3-card-4">
+            <header class="w3-container w3-green">
+              <h5>{{item.user}}</h5>
+            </header>
+
+            <div class="w3-container">
+              <p>{{ item.comment }}</p>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+    </div>
+
+{% endblock cont1 %}
+
+{% block cont2 %}
+{% endblock cont2 %}
+
+{#            {% if like %}#}
+{#            <p class="w3-left"><button class="w3-button w3-white w3-border" onclick="likedFunction(this)"><a href="{% url 'like' item.id %}"><b><i class="fa fa-check-square-o"></i> Liked</b></a></button></p>#}
+{#            {% else %}#}
+{#          <p class="w3-left"><button class="w3-button w3-white w3-border" onclick="likeFunction(this)"><a href="{% url 'like' item.id %}"><b><i class="fa fa-thumbs-up"></i> Like</b></a></button></p>#}
+{#            {% endif %}#}
+{#            <span>{{ postlike.count }}</span>#}
+{#          <p class="w3-right"><button class="w3-button w3-black" onclick="myFunction('demo1')" id="myBtn"><b>Replies  </b> <span class="w3-tag w3-white">1</span></button></p>#}
+{#          <p class="w3-clear"></p>#}
+{#          <div class="w3-row w3-margin-bottom" id="demo1" style="display:none">#}
+{#            <hr>#}
+{#              <div class="w3-col l2 m3">#}
+{#                <img src="/w3images/avatar_smoke.jpg" style="width:90px;">#}
+{#              </div>#}
+{#              <div class="w3-col l10 m9">#}
+{#                <h4>George <span class="w3-opacity w3-medium">May 3, 2015, 6:32 PM</span></h4>#}
+{#                <p>Great blog post! Following</p>#}
+{#              </div>#}
+{#          </div>#}
+</body>
+</html>
